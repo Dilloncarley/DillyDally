@@ -9,7 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
-
+<link rel="import" href="photo-gallery.html">
 <dom-module id="my-view1">
 
   <template>
@@ -43,19 +43,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 16px 0;
         color: #212121;
       }
-      .item{
-        background-color:pink;
-      }
+      
     </style>
-
-    <g-r-i-d min-column-width="160" gutter="7" max-columns="1" max-column-width="350" row-height="100cw">
-  <div class="item">Test</div>
-  <div class="item">test</div>
-  <div class="item">test</div>
-  <div class="item">test</div>
-  <div class="item">test</div>
-</g-r-i-d>
-
+<g-r-i-d is="dom-repeat" items="{{employees}}" min-column-width="350" gutter="10" max-columns="1" max-column-width="450" row-height="100cw">
+<photo-gallery></photo-gallery>
+</g-r-i-d> 
   </template>
 
   <script>
