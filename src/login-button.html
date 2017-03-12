@@ -1,0 +1,48 @@
+<!-- x-login.html -->
+<dom-module id="login-button">
+  <template>
+  <firebase-app name="dillydally" auth-domain="dillydally-cd300.firebaseapp.com"
+  database-url="https://dillydally-cd300.firebaseio.com"
+  api-key="AIzaSyCO77_A7lKQEjN22ZA3obwjxRwDDwtJDqg"
+    storageBucket = "dillydally-cd300.appspot.com"
+    messagingSenderId ="441689198250"
+  >
+</firebase-app>
+
+    <firebase-auth id="auth"
+                   app-name="dillydally"
+                   provider="google"
+                   signed-in="{{signedIn}}"
+                   status-known="{{statusKnown}}"
+                   user="{{user}}">
+    </firebase-auth>
+
+    <template is="dom-if" if="[[user]]">
+      Welcome [[user.displayName]]
+    </template>
+   
+  
+    <paper-button raised on-tap="login" hidden$="[[user]]">Sign In</paper-button>
+    <paper-button raised on-tap="logout" hidden$="[[!user]]">Sign Out</paper-button>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'login-button',
+      properties: {
+        user: {
+          type: Object
+        },
+        statusKnown: {
+          type: Object
+        }
+      },
+      login: function() {
+        return this.$.auth.signInWithPopup();
+      },
+      logout: function() {
+        return this.$.auth.signOut();
+      }
+    });
+  </script>
+</dom-module>

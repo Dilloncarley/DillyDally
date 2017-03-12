@@ -1,0 +1,31 @@
+<dom-module id="camera-c">
+<template>
+<style>
+
+</style>
+<video-camera id ="camera" screenshot="{{screen}}"></video-camera>
+	<paper-input  id="input" value="{{screen}}"></paper-input>
+  <paper-button on-tap="handleTap">Go </paper-button>
+<paper-fab icon="favorite"></paper-fab>
+</template> 
+
+ 
+ <script>
+    Polymer({
+      is: 'camera-c',
+       handleTap: function() {
+        this.$.camera.stop();
+        console.log(this.$.camera.stop())
+      },
+      properties: {
+        user: {
+          type: Object
+        }
+	 
+	 },
+    getFile: function() {
+     
+    }
+    });
+  </script>
+</dom-module>

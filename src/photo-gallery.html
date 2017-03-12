@@ -1,0 +1,62 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+  
+<dom-module id="photo-gallery">
+
+  <template>
+
+    <firebase-auth id="auth"
+                   app-name="dillydally"
+                   provider="google"
+                   signed-in="{{signedIn}}"
+                   status-known="{{statusKnown}}"
+                   user="{{user}}">
+    </firebase-auth>
+<style>
+ .item{
+        background-color:pink;
+        margin: 10px;
+      }
+      </style>
+<firebase-query
+    id="query"
+    app-name="dillydally"
+    path="/pictures/[[uid]]"
+    data="{{data}}">
+</firebase-query>
+
+    <template is="dom-repeat" items="{{data}}" as="pic">
+        <div class="item">Picture url: {{pic.url}}</div>
+       
+    </template>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'photo-gallery',
+//       ready: function() {
+
+
+  
+      ready: function() {
+        var config = {
+    apiKey: "AIzaSyCO77_A7lKQEjN22ZA3obwjxRwDDwtJDqg",
+    authDomain: "dillydally-cd300.firebaseapp.com",
+    databaseURL: "https://dillydally-cd300.firebaseio.com",
+    storageBucket: "dillydally-cd300.appspot.com",
+    messagingSenderId: "441689198250"
+  };
+        firebase.initializeApp(config);
+        var storage = firebase.storage();
+
+// Create a storage reference from our storage service
+var storageRef = storage.ref();
+        var imagesRef = storageRef.child('dillydally-cd300');
+
+        console.log(imagesRef)
+      }
+
+    });
+  </script>
+
+</dom-module>
