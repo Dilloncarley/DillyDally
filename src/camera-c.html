@@ -1,31 +1,132 @@
 <dom-module id="camera-c">
 <template>
 <style>
+#input{
+  display: none;
+}
+#camera{
+  display: none;
+}
+#switchCamera{
+  display: none;
+  position: fixed;
+  right:15px;
+  top:70px;
+}
+ #cameraButton{
+  position: fixed;
+  right:15px;
+  bottom:10px;
+}
+#captureButton{
+  display: none;
+  position: fixed;
+  margin:0 auto;
+  right: 0;
+  left: 0;
+  bottom:10px;
+  width:70px;
+  height: 70px;
+ 
+      --paper-fab-iron-icon: {
+        margin:7px;
+      }
+}
 
 </style>
-<video-camera id ="camera" screenshot="{{screen}}"></video-camera>
+<firebase-auth id="auth"
+                   app-name="dillydally"
+                   provider="google"
+                   signed-in="{{signedIn}}"
+                   status-known="{{statusKnown}}"
+                   user="{{user}}">
+    </firebase-auth>
+<video-camera  id ="camera" screenshot="{{screen}}"></video-camera>
 	<paper-input  id="input" value="{{screen}}"></paper-input>
-  <paper-button on-tap="handleTap">Go </paper-button>
-<paper-fab icon="favorite"></paper-fab>
+  <paper-fab id="cameraButton" on-tap="handleCamera" icon="image:photo-camera"></paper-fab>
+  <paper-fab id="switchCamera" on-tap="switchCamera" icon="image:switch-camera"></paper-fab>
+  <paper-fab id="captureButton" on-tap="captureCamera" icon="image:camera"></paper-fab>
+  <image src="{{screen}}"/>
+  <paper-fab id="uploadPic" on-tap="uploadPic" icon="icons:done"></paper-fab>
 </template> 
 
  
  <script>
     Polymer({
       is: 'camera-c',
-       handleTap: function() {
-        this.$.camera.stop();
-        console.log(this.$.camera.stop())
-      },
       properties: {
         user: {
           type: Object
-        }
+        },
+        open: {
+          type:Boolean
+        },
+        cameraFace:{
+          type:String
+        },
+         ref: {
+      computed: 'setFirebase(firebase)'
+    }
 	 
 	 },
-    getFile: function() {
+    captureCamera: function(){
+        this.$.camera.snap();
+    },
+    setFirebase: function(firebase) {
+    return new Firebase(firebase);
+  },
+    uploadPic:function(){
+
+      
+    },
+    switchCamera: function(){
+        if(this.cameraFace =="back"){
+          this.$.camera.toggleCamera();
+          this.$.camera.startCamera("","user");
+          this.cameraFace = "front";
+        }
+        else{
+          this.$.camera.toggleCamera();
+          this.$.camera.startCamera("","environment");
+          this.cameraFace = "back";
+        }
+        
+    },
+    test:function(){
+      this.$.camera.toggleCamera();
+      this.ready();
+    },
+     handleCamera: function() {
+  
+      if(this.open){
+          this.$.camera.toggleCamera();
+         this.open = false;
+         this.$.cameraButton.icon = "image:photo-camera";
+         this.$.captureButton.style.display = "none";
+         this.$.switchCamera.style.display = "none";
+         this.$.camera.style.display = "none";
+        
+      }else{
+      this.open = true;
+
+      this.$.camera.startCamera("","environment");
+      this.$.cameraButton.icon = "icons:close";
+      this.$.captureButton.style.display = "block";
+      this.$.switchCamera.style.display = "block";
+      this.$.camera.style.display = "block";
      
-    }
+      }
+    
+      },
+      ready:function(){
+        this.cameraFace = "back";
+        this.$.camera.startCamera("initalDisable");
+     
+        
+        
+      }
+      
+
     });
   </script>
 </dom-module>
